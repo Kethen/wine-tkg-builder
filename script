@@ -16,8 +16,8 @@ sed -i 's/_use_esync="true"/_use_esync="false"/' proton-tkg.cfg
 sed -i 's/_use_dxvk="git"/_use_dxvk="release"/' proton-tkg.cfg
 sed -i 's/_childwindow_fix="true"/_childwindow_fix="false"/' proton-tkg.cfg
 #sed -i 's/_protonify="true"/_protonify="false"/' proton-tkg.cfg
-sed -i 's/_plain_version=""/_plain_version="wine-9.0"/' proton-tkg.cfg
-sed -i 's/_staging_version=""/_staging_version="v9.0"/' proton-tkg.cfg
+sed -i 's/_plain_version=""/_plain_version="wine-9.6"/' proton-tkg.cfg
+sed -i 's/_staging_version=""/_staging_version="v9.6"/' proton-tkg.cfg
 
 echo '_ci_build="true"' >> proton-tkg.cfg
 touch tarplz
