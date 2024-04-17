@@ -17,10 +17,15 @@ then
 	git clone https://github.com/Frogging-Family/wine-tkg-git.git
 fi
 
-if ! [ -e winesync.h ]
+(
+	cd wine-tkg-git
+	git fetch origin
+)
+
+if ! [ -e ntsync.h ]
 then
-	_commit=e6bc51b547bbe820055e73cdbb93755b5bfa368c
-	curl "https://repo.or.cz/linux/zf.git/blob_plain/$_commit:/include/uapi/linux/winesync.h" --output "winesync.h"
+	_commit=67ecf76b95fcaf9a70e54b0d25b485f4e135e439
+	curl "https://repo.or.cz/linux/zf.git/blob_plain/$_commit:/include/uapi/linux/ntsync.h" --output "ntsync.h"
 fi
 
 podman run \
@@ -30,7 +35,7 @@ podman run \
 	-w /workdir \
 	--entrypoint /bin/bash \
 	-v ./script:/workdir/script:ro \
-	-v ./winesync.h:/usr/include/linux/winesync.h:ro \
+	-v ./ntsync.h:/usr/include/linux/ntsync.h:ro \
 	--env DEBIAN_FRONTEND=noninteractive \
 	$IMAGE_NAME \
 	script

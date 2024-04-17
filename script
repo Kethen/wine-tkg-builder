@@ -8,17 +8,33 @@ cd proton-tkg
 sed -i 's/distro=""/distro="debuntu"/' proton-tkg.cfg
 sed -i 's/autoinstall="false"/autoinstall="true"/' proton-tkg.cfg
 sed -i 's/_LOCAL_PRESET=""/_LOCAL_PRESET="none"/' proton-tkg.cfg
+
 sed -i 's/build_gstreamer="false"/build_gstreamer="true"/' proton-tkg.cfg
 sed -i 's/lib32_gstreamer="false"/lib32_gstreamer="true"/' proton-tkg.cfg
-sed -i 's/_use_fastsync="false"/_use_fastsync="true"/' proton-tkg.cfg
+
+sed -i 's/_use_staging="true"/_use_staging="false"/' proton-tkg.cfg
+sed -i 's/_plain_version=""/_plain_version="wine-9.6"/' proton-tkg.cfg
+sed -i 's/_staging_version=""/_staging_version="v9.6"/' proton-tkg.cfg
+
+#sed -i 's/_use_fastsync="false"/_use_fastsync="true"/' proton-tkg.cfg
 sed -i 's/_use_esync="true"/_use_esync="false"/' proton-tkg.cfg
-#sed -i 's/_use_fsync="true"/_use_fsync="false"/' proton-tkg.cfg
+sed -i 's/_use_fsync="true"/_use_fsync="false"/' proton-tkg.cfg
+sed -i 's/_protonify="true"/_protonify="false"/' proton-tkg.cfg
+echo '_use_ntsync="true"' >> proton-tkg.cfg
+
 sed -i 's/_use_dxvk="git"/_use_dxvk="release"/' proton-tkg.cfg
 sed -i 's/_childwindow_fix="true"/_childwindow_fix="false"/' proton-tkg.cfg
-#sed -i 's/_protonify="true"/_protonify="false"/' proton-tkg.cfg
-sed -i 's/_plain_version=""/_plain_version="wine-9.5"/' proton-tkg.cfg
-sed -i 's/_staging_version=""/_staging_version="v9.5"/' proton-tkg.cfg
+
+#echo '_msvcrt_nativebuiltin="true"' >> proton-tkg.cfg
+sed -i 's/_community_patches="amd_fsr_fshack-alternative.mypatch amdags-proton.mypatch atiadlxx-proton.mypatch 0002-proton_QPC.mypatch ntdll_Map_top-down_if_dll_characteristics_include_DYNAMIC_BASE.mypatch EA_desktop_fix.mypatch Shell32-CreateDirectoryInDestinationInFileOp-Move-multiop.mypatch"/_community_patches="amd_fsr_fshack-alternative.mypatch 0002-proton_QPC.mypatch ntdll_Map_top-down_if_dll_characteristics_include_DYNAMIC_BASE.mypatch EA_desktop_fix.mypatch Shell32-CreateDirectoryInDestinationInFileOp-Move-multiop.mypatch"/' proton-tkg.cfg
 
 echo '_ci_build="true"' >> proton-tkg.cfg
 touch tarplz
-yes|./proton-tkg.sh
+
+export WINE_DISABLE_FAST_SYNC=1
+
+if ! yes|./proton-tkg.sh
+then
+	cat proton-tkg.log
+	exit 1
+fi
