@@ -2,8 +2,6 @@ name: Build package
 
 on: [ push, pull_request, workflow_dispatch ]
 
-# written referencing apollo save tool psp's CI
-
 jobs:
   build_pkg:
     runs-on: ubuntu-22.04
@@ -12,16 +10,25 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-      # install latest pspdev sdk
-    - name: Install podman
+    - name: Add 32bit packages
+      run: |
+        sudo dpkg --add-architecture i386
+
+    - name: Install i386 cargo
       run: |
         sudo apt update
         export DEBIAN_FRONTEND=noninteractive
-        sudo apt install -y podman
+        sudo apt install -y cargo:i386 git
+
+    - name: Install libwine-dev
+      run: |
+        sudo apt update
+        export DEBIAN_FRONTEND=noninteractive
+        sudo apt install -y libwine-dev
 
     - name: Build
       run: |
-        bash build_podman.sh
+        sudo bash -c 'SKIP_PODMAN=true bash build_podman.sh'
 
     - name: Push package artifact
       uses: actions/upload-artifact@v3
